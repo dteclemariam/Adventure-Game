@@ -24,8 +24,8 @@ public class Interface {
         }
 
         if (running & ready.toLowerCase().equals("yes")) {
-            System.out.println("You enter your first dungeon!");
             separator();
+            System.out.println("You enter your first dungeon!");
             startGame();
             } else if (running & ready.toLowerCase().equals("no")) {
                 exit();
@@ -50,12 +50,15 @@ public class Interface {
 
     void startGame(){
         controller.createEnemyList();
-        Characters enemy = controller.getNextEnemy();
 
         Game:
         while (running){
             separator();
+            Characters enemy = controller.getNextEnemy();
+            System.out.println("\t# " + enemy.getCharacterName() + " appeared!");
+            break ;
 
+        //TODO Continue here
         }
     }
 }

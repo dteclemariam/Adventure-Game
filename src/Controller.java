@@ -31,14 +31,7 @@ public class Controller {
             Enemy enemy = new Enemy(enemyTypes[i], enemyHP, enemyAttackDamage, complimentingText[i]);
             enemies.add(enemy);
         }
-        printEnemyList();
     }
-
-        void printEnemyList(){
-            for (Characters ch: enemies) {
-                System.out.println(ch.getCharacterName());
-            }
-        }
 
         public void createPlayer (String name){
             Player player = new Player(name, hp, attackDamage, battleCry);
