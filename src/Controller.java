@@ -24,6 +24,9 @@ public class Controller {
     private int enemyAttackDamage = 75;
     private int healthPotionDropChance = 50;
 
+    public int getNumbHealthPotions() {
+        return numbHealthPotions;
+    }
 
     //creates enemies and fills array with enemies
     public void createEnemyList() {
@@ -33,24 +36,44 @@ public class Controller {
         }
     }
 
-        public void createPlayer (String name){
-            Player player = new Player(name, hp, attackDamage, battleCry);
-        }
+    public void createPlayer(String name) {
+        Player player = new Player(name, hp, attackDamage, battleCry);
+    }
 
-        public boolean yesOrNo (String input){
-            if (input.equalsIgnoreCase("yes") || input.equalsIgnoreCase("no")) {
-                return true;
-            } else return false;
-        }
-
-        //returns a random enemy form the array and removes the enemy from the array
-        public Characters getNextEnemy(){
-            int index = random.nextInt(enemies.size());
-            Characters enemy = enemies.get(index);
-            enemies.remove(index);
-            return enemy;
+    public Boolean handleYesOrNo(String input) {
+        if (input.equalsIgnoreCase("yes")) {
+            return true;
+        } else if (input.equalsIgnoreCase("no")) {
+            exit();
+            return null;
+        }else{
+            return false;
         }
     }
+
+    //method for closing game
+    public void exit() {
+        System.out.println("The game is exiting");
+        System.exit(0);
+    }
+
+    //returns a random enemy form the array and removes the enemy from the array
+    public Characters getNextEnemy() {
+        int index = random.nextInt(enemies.size());
+        Characters enemy = enemies.get(index);
+        enemies.remove(index);
+        return enemy;
+    }
+
+    public boolean luckyDrop() {
+        if (random.nextInt(100) > healthPotionDropChance) {
+            numbHealthPotions++;
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
 
 
 
