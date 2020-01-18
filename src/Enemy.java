@@ -1,7 +1,8 @@
-public class Enemy extends Characters  {
+public class Enemy extends Character {
 
-    public Enemy(String characterName, int hp, int attackDamage, String battleCry) {
-        super(characterName, hp, attackDamage, battleCry);
+    public Enemy(String characterName, String battleCry, int minAttackDamage, int maxAttackDamage, int hp) {
+        super(characterName, battleCry, minAttackDamage, maxAttackDamage, hp);
     }
-    //TODO boolean if carries healthpotion or not?
 }
+
+

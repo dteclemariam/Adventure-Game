@@ -2,44 +2,42 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Controller {
-    //Creating array with enemietypes and their text complimenting attack
-    private String[] enemyTypes = {"Skelleton", "Mage", "Assassin", "Warrior", "Zoombie", "Werewolf"};
-    private String[] complimentingText = {"with a club", "while whispering a spell", "with a poisoned arrow",
-            "with a mighty war cry", "with a hunger for braaaains", "with a loud howl"};
-    ArrayList<Characters> enemies = new ArrayList<>();
+
+    GameVariables gameVariables = new GameVariables();
     Random random = new Random();
+    ArrayList<Character> enemiesList = new ArrayList<>();
+    Player player = null;
 
-    //stats
-    private int cavesCompleted = 0;
 
+    //returns a random number between 0 and parameter(exclusive)
+    private int getRandomNumber(int maxValue){
+        return random.nextInt(maxValue);
+    }
 
-    //player stats
-    private int hp = 100;
-    private int attackDamage = 100;
-    private int numbHealthPotions = 3;
-    private String battleCry = "Rooooar";
-
-    //Enemy variables
-    private int enemyHP = 75;
-    private int enemyAttackDamage = 75;
-    private int healthPotionDropChance = 50;
-
-    public int getNumbHealthPotions() {
-        return numbHealthPotions;
+    //return a random number between parameters minvalue(inclusive and maxvalue(inclusive)
+    private int getRandomNumber(int maxValue, int minValue){
+        return random.nextInt((maxValue - minValue) + 1) + minValue;
     }
 
     //creates enemies and fills array with enemies
     public void createEnemyList() {
+        String[] enemyTypes = gameVariables.getEnemyTypes();
+        String[] complimentingText = gameVariables.getComplimentingText();
         for (int i = 0; i < enemyTypes.length; i++) {
-            Enemy enemy = new Enemy(enemyTypes[i], enemyHP, enemyAttackDamage, complimentingText[i]);
-            enemies.add(enemy);
+            int enemyHP = getRandomNumber(gameVariables.getEnemyMaxHP(), gameVariables.getEnemyMinHP());
+            Enemy enemy = new Enemy(enemyTypes[i], complimentingText[i], gameVariables.getMinAttackDamage(),
+                    gameVariables.getMaxAttackDamage(), enemyHP) ;
+            enemiesList.add(enemy);
         }
     }
 
-    public void createPlayer(String name) {
-        Player player = new Player(name, hp, attackDamage, battleCry);
+    //Creates player
+    public void createPlayer(String name, String battleCry) {
+        player = new Player(name, battleCry, gameVariables.getMinAttackDamage(), gameVariables.getMaxAttackDamage(),
+                gameVariables.getHp(), gameVariables.getStartingAmmountOfHealtPotions());
     }
 
+    //handles input from user and returns a boolean
     public Boolean handleYesOrNo(String input) {
         if (input.equalsIgnoreCase("yes")) {
             return true;
@@ -58,16 +56,17 @@ public class Controller {
     }
 
     //returns a random enemy form the array and removes the enemy from the array
-    public Characters getNextEnemy() {
-        int index = random.nextInt(enemies.size());
-        Characters enemy = enemies.get(index);
-        enemies.remove(index);
+    public Character getNextEnemy() {
+        int index = getRandomNumber(enemiesList.size());
+        Character enemy = enemiesList.get(index);
+        enemiesList.remove(index);
         return enemy;
     }
 
+    //uses random 0-100, if its above 50 the enemy drops a health potion
     public boolean luckyDrop() {
-        if (random.nextInt(100) > healthPotionDropChance) {
-            numbHealthPotions++;
+        if (random.nextInt(100) > gameVariables.getHealthPotionDropChance()) {
+            player.increaseNumbHealthPotions();
             return true;
         } else {
             return false;

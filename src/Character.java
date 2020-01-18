@@ -1,48 +1,38 @@
-public abstract class Characters {
+public abstract class Character {
     String characterName;
-    int hp;
-    int attackDamage;
     String battleCry;
+    int minAttackDamage;
+    int maxAttackDamage;
+    int hp;
 
-    public Characters(String characterName, int hp, int attackDamage, String battleCry) {
+    public Character(String characterName, String battleCry, int minAttackDamage, int maxAttackDamage, int hp) {
         this.characterName = characterName;
-        this.hp = hp;
-        this.attackDamage = attackDamage;
         this.battleCry = battleCry;
+        this.minAttackDamage = minAttackDamage;
+        this.maxAttackDamage = maxAttackDamage;
+        this.hp = hp;
     }
+
 
     public String getCharacterName() {
         return characterName;
-    }
-
-    public void setCharacterName(String characterName) {
-        this.characterName = characterName;
     }
 
     public int getHp() {
         return hp;
     }
 
-    public void setHp(int hp) {
-        this.hp = hp;
-    }
-
-    public int getAttackDamage() {
-        return attackDamage;
-    }
-
-    public void setAttackDamage(int attackDamage) {
-        this.attackDamage = attackDamage;
-    }
+    public void setHP(int hp){this.hp = hp;}
 
     public String getBattleCry() {
         return battleCry;
     }
 
-    public void setBattleCry(String battleCry) {
-        this.battleCry = battleCry;
+    public int getMinAttackDamage() {
+        return minAttackDamage;
     }
 
-    public void attack(){
+    public int getMaxAttackDamage() {
+        return maxAttackDamage;
     }
 }
