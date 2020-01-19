@@ -13,7 +13,6 @@ public abstract class Character {
         this.hp = hp;
     }
 
-
     public String getCharacterName() {
         return characterName;
     }

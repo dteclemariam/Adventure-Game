@@ -6,7 +6,7 @@ public class Controller {
     GameVariables gameVariables = new GameVariables();
     Random random = new Random();
     ArrayList<Character> enemiesList = new ArrayList<>();
-    Player player = null;
+    Player player;
 
 
     //returns a random number between 0 and parameter(exclusive)
@@ -39,15 +39,19 @@ public class Controller {
 
     //handles input from user and returns a boolean
     public Boolean handleYesOrNo(String input) {
-        if (input.equalsIgnoreCase("yes")) {
+        if (input.equalsIgnoreCase("yes") || input.equalsIgnoreCase("no")) {
             return true;
-        } else if (input.equalsIgnoreCase("no")) {
-            exit();
-            return null;
         }else{
             return false;
         }
     }
+
+    //handles input from user during combat and returns a boolean
+    /*public boolean handleCombatInput(int input){
+        if(input = 1){
+            return true;
+        }
+    }*/
 
     //method for closing game
     public void exit() {
@@ -61,6 +65,11 @@ public class Controller {
         Character enemy = enemiesList.get(index);
         enemiesList.remove(index);
         return enemy;
+    }
+
+    //return a player object
+    public Character getPlayer(){
+        return player;
     }
 
     //uses random 0-100, if its above 50 the enemy drops a health potion
