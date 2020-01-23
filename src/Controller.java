@@ -7,6 +7,7 @@ public class Controller {
     Random random = new Random();
     ArrayList<Character> enemiesList = new ArrayList<>();
     Player player;
+    Character currentEnemy;
 
 
     //returns a random number between 0 and parameter(exclusive)
@@ -47,11 +48,18 @@ public class Controller {
     }
 
     //handles input from user during combat and returns a boolean
-    /*public boolean handleCombatInput(int input){
-        if(input = 1){
+    public boolean handleCombatInput(int input){
+        if(input == 1){
+            //Attack
             return true;
-        }
-    }*/
+        }else if (input == 2){
+            //Drink health potion
+            return true;
+        }else if (input == 3){
+            //Run
+            return true;
+        }else return false;
+    }
 
     //method for closing game
     public void exit() {
@@ -59,12 +67,20 @@ public class Controller {
         System.exit(0);
     }
 
-    //returns a random enemy form the array and removes the enemy from the array
-    public Character getNextEnemy() {
+    //returns a random enemy form the array and removes the enemy from the array.
+    // Can be used if battle handled in the class interfacfe
+    /*public Character nextEnemy() {
         int index = getRandomNumber(enemiesList.size());
         Character enemy = enemiesList.get(index);
         enemiesList.remove(index);
         return enemy;
+    }*/
+
+    //picks a random enemy from the arraylist
+    public void getNextEnemy(){
+        int index = getRandomNumber(enemiesList.size());
+        currentEnemy = enemiesList.get(index);
+        enemiesList.remove(index);
     }
 
     //return a player object
@@ -80,6 +96,20 @@ public class Controller {
         } else {
             return false;
         }
+    }
+
+    public int playerAttack(){
+        int playerAttackaDamage = random.nextInt((player.getMaxAttackDamage() - player.getMinAttackDamage()) + 1)
+                + player.getMinAttackDamage();
+        currentEnemy.damageTaken(playerAttackaDamage);
+        return playerAttackaDamage;
+    }
+
+    public int enemyAttack(){
+        int enemyAttackDamage = random.nextInt((currentEnemy.getMaxAttackDamage()
+                - currentEnemy.getMinAttackDamage()) + 1) + currentEnemy.getMinAttackDamage();
+        player.damageTaken(enemyAttackDamage);
+        return enemyAttackDamage;
     }
 }
 

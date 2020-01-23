@@ -34,4 +34,10 @@ public abstract class Character {
     public int getMaxAttackDamage() {
         return maxAttackDamage;
     }
+
+    public void damageTaken(int damage){
+        if(hp - damage < 0){
+            hp = 0;
+        }else hp = hp - damage;
+    }
 }

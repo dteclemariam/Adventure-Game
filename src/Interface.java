@@ -25,7 +25,7 @@ public class Interface {
         System.out.println("How does your battle cry sound like?");
         String battleCry = scanner.next();
         controller.createPlayer(name, battleCry);
-        String choice = printYesNoChoices();
+        String choice = yesOrNoChoice();
         if (choice.equalsIgnoreCase("yes")) {
             startGame();
         } else {
@@ -37,7 +37,7 @@ public class Interface {
     method to print yes and no choices -> sends the input to a method in controller that checks if the input
     is valid and returns a boolean
      */
-    public String printYesNoChoices() {
+    public String yesOrNoChoice() {
         System.out.println("Type yes and press enter to continue\n" +
                 "Type no and enter if you are to scared and want to exit the game");
         String yesOrNo = scanner.next();
@@ -55,13 +55,24 @@ public class Interface {
     }
 
     //prints combat options
-    public void printCombatOptions() {
+    public void combatOptions() {
         System.out.println("\n\tWhat would you like to do?");
         System.out.println("\t1. Attack");
         System.out.println("\t2. Drink health potion");
         System.out.println("\t3. RUN!");
     }
 
+    public void printPlayerAttack(){
+        System.out.println("You attack the " + controller.currentEnemy.getCharacterName() + " while yelling " +
+                controller.player.getBattleCry() + "\n\tYou do " + controller.playerAttack() + " damage to "
+                + controller.currentEnemy.getCharacterName() + "\n");
+        printEnemyAttack();
+    }
+
+    public void printEnemyAttack(){
+        System.out.println(controller.currentEnemy.getCharacterName() + " attacks you for " + controller.enemyAttack()
+                + " damage " + controller.currentEnemy.getBattleCry());
+    }
 
     private void startGame() {
         controller.createEnemyList();
@@ -69,37 +80,20 @@ public class Interface {
         System.out.println("You enter your first dungeon");
         boolean running = true;
 
-
         //label for while loop to tell the program to iterate back to start
-        Game:
+        //Game:
         while (running) {
             printSeparator();
-            Character enemy = controller.getNextEnemy();
-            Character player = controller.getPlayer();
-            int enemyCurrentHp = enemy.getHp();
-            int playerCurrentHp = player.getHp();
-            System.out.println("\t# Enemy " + enemy.getCharacterName() + " with " + enemyCurrentHp + " HP" +
-                    " has appeared! #\n");
-
-            while (enemyCurrentHp > 0) {
-                System.out.println("\tYour HP: " + playerCurrentHp);
-                System.out.println("\tEnemy HP: " + enemyCurrentHp);
-                printCombatOptions();
-                int input;
-
-                //checks if the input is a int, if not calls the print
-                boolean validInput = false;
-                while (!validInput) {
-                    try {
-                        input = scanner.nextInt();
-                    } catch (InputMismatchException e) {
-                        printInvalidInput();
-                        printCombatOptions();
-                    }
-                    validInput = true;
-                }
-
-            /*
+            //Character enemy = controller.nextEnemy();
+            //Character player = controller.getPlayer();
+            //int enemyCurrentHp = enemy.getHp();
+            //int playerCurrentHp = player.getHp();
+            controller.getNextEnemy();
+            System.out.println("\t# Enemy " + controller.currentEnemy.getCharacterName() + " with "
+                    + controller.currentEnemy.getHp() + " HP" + " has appeared! #\n");
+            combat();
+        }
+                   /*
             //Checking if healthpotion dropped
             boolean newHealthpotion = controller.luckyDrop();
             if (newHealthpotion) {
@@ -112,8 +106,32 @@ public class Interface {
 
                 //TODO Continue here
             }*/
+    }
+    public void combat() {
+        while (controller.currentEnemy.getHp() > 0 || controller.player.getHp() > 0) {
+            System.out.println("\tYour HP: " + controller.player.getHp());
+            System.out.println("\tEnemy HP: " + controller.currentEnemy.getHp());
+            combatOptions();
+            int input = 0;
+            boolean validInput = false;
+            //checks if the input is a int, if not calls the print
+            while (!validInput) {
+                try {
+                    input = scanner.nextInt();
+                    validInput = controller.handleCombatInput(input);
+                } catch (InputMismatchException e) {
+                    printInvalidInput();
+                    combatOptions();
+                }
+            }
+
+            if (input == 1) {
+                printSeparator();
+                printPlayerAttack();
+                printSeparator();
             }
         }
+
     }
 }
 

@@ -23,9 +23,5 @@ public class Player extends Character {
         this.numHealthPotions --;
     }
 
-    public void setHp(int hp) {
-        this.hp = hp;
-    }
-
 }
 
