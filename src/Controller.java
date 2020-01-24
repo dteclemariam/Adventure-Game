@@ -26,8 +26,8 @@ public class Controller {
         String[] complimentingText = gameVariables.getComplimentingText();
         for (int i = 0; i < enemyTypes.length; i++) {
             int enemyHP = getRandomNumber(gameVariables.getEnemyMaxHP(), gameVariables.getEnemyMinHP());
-            Enemy enemy = new Enemy(enemyTypes[i], complimentingText[i], gameVariables.getMinAttackDamage(),
-                    gameVariables.getMaxAttackDamage(), enemyHP) ;
+            Enemy enemy = new Enemy(enemyTypes[i], complimentingText[i], gameVariables.getEnemyMinAttackDamage(),
+                    gameVariables.getEnemyMaxAttackDamage(), enemyHP) ;
             enemiesList.add(enemy);
         }
     }

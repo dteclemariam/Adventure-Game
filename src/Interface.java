@@ -84,10 +84,6 @@ public class Interface {
         //Game:
         while (running) {
             printSeparator();
-            //Character enemy = controller.nextEnemy();
-            //Character player = controller.getPlayer();
-            //int enemyCurrentHp = enemy.getHp();
-            //int playerCurrentHp = player.getHp();
             controller.getNextEnemy();
             System.out.println("\t# Enemy " + controller.currentEnemy.getCharacterName() + " with "
                     + controller.currentEnemy.getHp() + " HP" + " has appeared! #\n");
@@ -108,7 +104,7 @@ public class Interface {
             }*/
     }
     public void combat() {
-        while (controller.currentEnemy.getHp() > 0 || controller.player.getHp() > 0) {
+        do {
             System.out.println("\tYour HP: " + controller.player.getHp());
             System.out.println("\tEnemy HP: " + controller.currentEnemy.getHp());
             combatOptions();
@@ -130,8 +126,7 @@ public class Interface {
                 printPlayerAttack();
                 printSeparator();
             }
-        }
-
+        } while (controller.currentEnemy.getHp() > 0 && controller.player.getHp() > 0);
     }
 }
 
