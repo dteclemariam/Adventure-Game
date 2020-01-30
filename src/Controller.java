@@ -67,14 +67,6 @@ public class Controller {
         System.exit(0);
     }
 
-    //returns a random enemy form the array and removes the enemy from the array.
-    // Can be used if battle handled in the class interfacfe
-    /*public Character nextEnemy() {
-        int index = getRandomNumber(enemiesList.size());
-        Character enemy = enemiesList.get(index);
-        enemiesList.remove(index);
-        return enemy;
-    }*/
 
     //picks a random enemy from the arraylist
     public void getNextEnemy(){
@@ -96,6 +88,13 @@ public class Controller {
         } else {
             return false;
         }
+    }
+
+    //Method to see if check if there are more enemies left or the player has more than 0hp.
+    public boolean gameRunning(){
+        if(player.getHp() > 0 && !enemiesList.isEmpty()) {
+            return true;
+        }else{return false;}
     }
 
     public int playerAttack(){

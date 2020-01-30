@@ -55,39 +55,73 @@ public class Interface {
     }
 
     //prints combat options
-    public void combatOptions() {
-        System.out.println("\n\tWhat would you like to do?");
+    public int combatOptionsChoice() {
+        /*System.out.println("\n\tWhat would you like to do?");
         System.out.println("\t1. Attack");
         System.out.println("\t2. Drink health potion");
         System.out.println("\t3. RUN!");
+        */
+        int input = 0;
+        boolean validInput = false;
+        //checks if the input is a int, if not calls the print
+        while (!validInput) {
+            try {
+                System.out.println("\n\tWhat would you like to do?");
+                System.out.println("\t1. Attack");
+                System.out.println("\t2. Drink health potion");
+                System.out.println("\t3. RUN!");
+                input = scanner.nextInt();
+                validInput = controller.handleCombatInput(input);
+            } catch (InputMismatchException e) {
+                printInvalidInput();
+                combatOptionsChoice();
+            }
+        }
+        return input;
     }
 
-    public void printPlayerAttack(){
+    //prints player attack on enemy
+    public void printPlayerAttack() {
         System.out.println("You attack the " + controller.currentEnemy.getCharacterName() + " while yelling " +
                 controller.player.getBattleCry() + "\n\tYou do " + controller.playerAttack() + " damage to "
                 + controller.currentEnemy.getCharacterName() + "\n");
-        printEnemyAttack();
+        if (controller.currentEnemy.getHp() > 0) {
+            printEnemyAttack();
+        }
     }
 
-    public void printEnemyAttack(){
+    //print enemy attack on player
+    public void printEnemyAttack() {
         System.out.println(controller.currentEnemy.getCharacterName() + " attacks you for " + controller.enemyAttack()
                 + " damage " + controller.currentEnemy.getBattleCry());
     }
 
     private void startGame() {
+        boolean running = true;
         controller.createEnemyList();
         printSeparator();
         System.out.println("You enter your first dungeon");
-        boolean running = true;
 
-        //label for while loop to tell the program to iterate back to start
-        //Game:
+
+        //While player hp > 0 and there are more enemies left in the enemiesList
         while (running) {
             printSeparator();
             controller.getNextEnemy();
             System.out.println("\t# Enemy " + controller.currentEnemy.getCharacterName() + " with "
                     + controller.currentEnemy.getHp() + " HP" + " has appeared! #\n");
             combat();
+            running = controller.gameRunning();
+        }
+
+        //The while loop has ended and the if checks if you won or were defeated
+        if(controller.enemiesList.isEmpty()){
+            printSeparator();
+            System.out.println("\t#There are no enemies left, YOU WIN!");
+            printSeparator();
+        }else {
+            printSeparator();
+            System.out.println("\t#You have no HP left!\n\t#You have been defeated - GAME OVER!");
+            printSeparator();
         }
                    /*
             //Checking if healthpotion dropped
@@ -103,30 +137,22 @@ public class Interface {
                 //TODO Continue here
             }*/
     }
+
     public void combat() {
         do {
             System.out.println("\tYour HP: " + controller.player.getHp());
             System.out.println("\tEnemy HP: " + controller.currentEnemy.getHp());
-            combatOptions();
-            int input = 0;
-            boolean validInput = false;
-            //checks if the input is a int, if not calls the print
-            while (!validInput) {
-                try {
-                    input = scanner.nextInt();
-                    validInput = controller.handleCombatInput(input);
-                } catch (InputMismatchException e) {
-                    printInvalidInput();
-                    combatOptions();
-                }
-            }
-
+            int input = combatOptionsChoice();
             if (input == 1) {
                 printSeparator();
                 printPlayerAttack();
                 printSeparator();
             }
         } while (controller.currentEnemy.getHp() > 0 && controller.player.getHp() > 0);
+        if (controller.currentEnemy.getHp() == 0) {
+            System.out.println("The " + controller.currentEnemy.getCharacterName() + " have been defeated!" +
+                    "\nYou continue to the next dungeon!");
+        }
     }
 }
 
