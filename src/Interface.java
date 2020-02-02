@@ -44,23 +44,16 @@ public class Interface {
         boolean validInput = controller.handleYesOrNo(yesOrNo);
         while (!validInput) {
             printInvalidInput();
-            System.out.println("Type yes and press enter to continue\n" +
-                    "Type no and enter if you are to scared and want to exit the game");
             yesOrNo = scanner.next();
-            //printYesNoChoices(); commented out as this just got the while-loop infinite
-            validInput = controller.handleYesOrNo(yesOrNo); //inserted isntead of printYesNoChoices();
+            validInput = controller.handleYesOrNo(yesOrNo); //inserted instead of printYesNoChoices();
 
         }
         return yesOrNo;
     }
 
-    //prints combat options
+    //prints combat options //TODO infinite loop if anything but a number is written
     public int combatOptionsChoice() {
-        /*System.out.println("\n\tWhat would you like to do?");
-        System.out.println("\t1. Attack");
-        System.out.println("\t2. Drink health potion");
-        System.out.println("\t3. RUN!");
-        */
+
         int input = 0;
         boolean validInput = false;
         //checks if the input is a int, if not calls the print
@@ -70,12 +63,10 @@ public class Interface {
                 System.out.println("\t1. Attack");
                 System.out.println("\t2. Drink health potion");
                 System.out.println("\t3. RUN!");
-                input = scanner.nextInt();
+                input = Integer.parseInt(scanner.next());
                 validInput = controller.handleCombatInput(input);
-            } catch (InputMismatchException e) {
-                printInvalidInput();
-                combatOptionsChoice();
-            }
+            } catch (NumberFormatException e) {}
+            printInvalidInput();
         }
         return input;
     }
@@ -147,6 +138,9 @@ public class Interface {
                 printSeparator();
                 printPlayerAttack();
                 printSeparator();
+            }else if (input == 2){
+                boolean drinkHealthPotion = controller.drinkHealthPotion();
+
             }
         } while (controller.currentEnemy.getHp() > 0 && controller.player.getHp() > 0);
         if (controller.currentEnemy.getHp() == 0) {

@@ -3,6 +3,7 @@ public class GameVariables {
     //Game variables
     private int cavesCompleted = 0;
     private int healthPotionDropChance = 50; //Percent
+    private int healthPotionHealingAmount = 40;
     //Enemy variables
     private int enemyMinHP = 50;
     private int enemyMaxHP = 75;
@@ -68,5 +69,9 @@ public class GameVariables {
 
     public int getHp() {
         return hp;
+    }
+
+    public int getHealthPotionHealingAmount(){
+        return healthPotionHealingAmount;
     }
 }

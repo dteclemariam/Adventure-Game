@@ -110,6 +110,14 @@ public class Controller {
         player.damageTaken(enemyAttackDamage);
         return enemyAttackDamage;
     }
+
+    public boolean drinkHealthPotion(){
+        if(player.getNumHealthPotions() > 0){
+            player.drinkHealthPotion(gameVariables.getHealthPotionHealingAmount());
+            player.decreaseNumHealthPotions();
+            return true;
+        }else{return false;}
+    }
 }
 
 

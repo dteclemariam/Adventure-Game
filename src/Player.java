@@ -23,5 +23,9 @@ public class Player extends Character {
         this.numHealthPotions --;
     }
 
+    public void drinkHealthPotion(int healthPoptionHealingAmount){
+        super.hp =+ healthPoptionHealingAmount;
+    }
+
 }
 
