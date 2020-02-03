@@ -11,12 +11,12 @@ public class Controller {
 
 
     //returns a random number between 0 and parameter(exclusive)
-    private int getRandomNumber(int maxValue){
+    private int getRandomNumber(int maxValue) {
         return random.nextInt(maxValue);
     }
 
     //return a random number between parameters minvalue(inclusive and maxvalue(inclusive)
-    private int getRandomNumber(int maxValue, int minValue){
+    private int getRandomNumber(int maxValue, int minValue) {
         return random.nextInt((maxValue - minValue) + 1) + minValue;
     }
 
@@ -27,7 +27,7 @@ public class Controller {
         for (int i = 0; i < enemyTypes.length; i++) {
             int enemyHP = getRandomNumber(gameVariables.getEnemyMaxHP(), gameVariables.getEnemyMinHP());
             Enemy enemy = new Enemy(enemyTypes[i], complimentingText[i], gameVariables.getEnemyMinAttackDamage(),
-                    gameVariables.getEnemyMaxAttackDamage(), enemyHP) ;
+                    gameVariables.getEnemyMaxAttackDamage(), enemyHP);
             enemiesList.add(enemy);
         }
     }
@@ -42,23 +42,23 @@ public class Controller {
     public Boolean handleYesOrNo(String input) {
         if (input.equalsIgnoreCase("yes") || input.equalsIgnoreCase("no")) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
 
     //handles input from user during combat and returns a boolean
-    public boolean handleCombatInput(int input){
-        if(input == 1){
+    public boolean handleCombatInput(int input) {
+        if (input == 1 || input == 2 || input == 3) {
             //Attack
             return true;
-        }else if (input == 2){
+        /*}else if (input == 2){
             //Drink health potion
             return true;
         }else if (input == 3){
             //Run
-            return true;
-        }else return false;
+            return true;*/
+        } else return false;
     }
 
     //method for closing game
@@ -69,14 +69,14 @@ public class Controller {
 
 
     //picks a random enemy from the arraylist
-    public void getNextEnemy(){
+    public void getNextEnemy() {
         int index = getRandomNumber(enemiesList.size());
         currentEnemy = enemiesList.get(index);
         enemiesList.remove(index);
     }
 
     //return a player object
-    public Character getPlayer(){
+    public Character getPlayer() {
         return player;
     }
 
@@ -91,32 +91,36 @@ public class Controller {
     }
 
     //Method to see if check if there are more enemies left or the player has more than 0hp.
-    public boolean gameRunning(){
-        if(player.getHp() > 0 && !enemiesList.isEmpty()) {
+    public boolean gameRunning() {
+        if (player.getHp() > 0 && !enemiesList.isEmpty()) {
             return true;
-        }else{return false;}
+        } else {
+            return false;
+        }
     }
 
-    public int playerAttack(){
+    public int playerAttack() {
         int playerAttackaDamage = random.nextInt((player.getMaxAttackDamage() - player.getMinAttackDamage()) + 1)
                 + player.getMinAttackDamage();
         currentEnemy.damageTaken(playerAttackaDamage);
         return playerAttackaDamage;
     }
 
-    public int enemyAttack(){
+    public int enemyAttack() {
         int enemyAttackDamage = random.nextInt((currentEnemy.getMaxAttackDamage()
                 - currentEnemy.getMinAttackDamage()) + 1) + currentEnemy.getMinAttackDamage();
         player.damageTaken(enemyAttackDamage);
         return enemyAttackDamage;
     }
 
-    public boolean drinkHealthPotion(){
-        if(player.getNumHealthPotions() > 0){
-            player.drinkHealthPotion(gameVariables.getHealthPotionHealingAmount());
+    public boolean drinkHealthPotion() {
+        if (player.getNumHealthPotions() > 0) {
+            player.heal(gameVariables.getHealthPotionHealingAmount());
             player.decreaseNumHealthPotions();
             return true;
-        }else{return false;}
+        } else {
+            return false;
+        }
     }
 }
 

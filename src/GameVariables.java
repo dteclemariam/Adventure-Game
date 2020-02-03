@@ -71,7 +71,9 @@ public class GameVariables {
         return hp;
     }
 
-    public int getHealthPotionHealingAmount(){
+    public int getHealthPotionHealingAmount() {
         return healthPotionHealingAmount;
     }
+
+
 }

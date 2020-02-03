@@ -45,46 +45,77 @@ public class Interface {
         while (!validInput) {
             printInvalidInput();
             yesOrNo = scanner.next();
-            validInput = controller.handleYesOrNo(yesOrNo); //inserted instead of printYesNoChoices();
-
+            validInput = controller.handleYesOrNo(yesOrNo);
         }
         return yesOrNo;
     }
 
-    //prints combat options //TODO infinite loop if anything but a number is written
+    //prints combat options
     public int combatOptionsChoice() {
-
         int input = 0;
         boolean validInput = false;
-        //checks if the input is a int, if not calls the print
+        System.out.println("\n\tWhat would you like to do?");
+        System.out.println("\t1. Attack");
+        System.out.println("\t2. Drink health potion");
+        System.out.println("\t3. RUN!");
+
+        try {
+            input = Integer.parseInt(scanner.next());
+            validInput = controller.handleCombatInput(input);
+        } catch (NumberFormatException e) {
+        }
+
         while (!validInput) {
+            printInvalidInput();
             try {
-                System.out.println("\n\tWhat would you like to do?");
-                System.out.println("\t1. Attack");
-                System.out.println("\t2. Drink health potion");
-                System.out.println("\t3. RUN!");
                 input = Integer.parseInt(scanner.next());
                 validInput = controller.handleCombatInput(input);
-            } catch (NumberFormatException e) {}
-            printInvalidInput();
+            } catch (NumberFormatException e) {
+            }
         }
         return input;
     }
 
     //prints player attack on enemy
     public void printPlayerAttack() {
-        System.out.println("You attack the " + controller.currentEnemy.getCharacterName() + " while yelling " +
+        printSeparator();
+        System.out.println("\t#You attack the " + controller.currentEnemy.getCharacterName() + " while yelling " +
                 controller.player.getBattleCry() + "\n\tYou do " + controller.playerAttack() + " damage to "
-                + controller.currentEnemy.getCharacterName() + "\n");
+                + controller.currentEnemy.getCharacterName());
         if (controller.currentEnemy.getHp() > 0) {
             printEnemyAttack();
         }
+        printSeparator();
     }
 
     //print enemy attack on player
     public void printEnemyAttack() {
-        System.out.println(controller.currentEnemy.getCharacterName() + " attacks you for " + controller.enemyAttack()
+        System.out.println("\n\t# " + controller.currentEnemy.getCharacterName() + " attacks you for " + controller.enemyAttack()
                 + " damage " + controller.currentEnemy.getBattleCry());
+    }
+
+    public void drinkHealthPotion() {
+        int playerCurrentHP = controller.player.getHp();
+        boolean drinkHealthPotion = controller.drinkHealthPotion();
+        if (drinkHealthPotion) {
+            System.out.println("\t#You drink a health potion and gain " +
+                    (playerCurrentHP - controller.player.getHp()) + "HP" + "\n\t#You now have " +
+                    controller.player.getHp() + "HP");
+        } else {
+            System.out.println("\t#You check your inventory and you have any more health potions left!");
+            printEnemyAttack();
+        }
+    }
+
+    public void enemyDroppedHealthPotion() {
+        System.out.println("You loot the corpse of the " + controller.currentEnemy.getCharacterName() + "!");
+        boolean enemyDroppedHealthPotion = controller.luckyDrop();
+        if (enemyDroppedHealthPotion) {
+            System.out.println("\t#You find a health potion");
+            System.out.println("\tYou know have " + controller.player.getNumHealthPotions() + " health potion(s)");
+        } else {
+            System.out.println("There is no loot");
+        }
     }
 
     private void startGame() {
@@ -105,11 +136,11 @@ public class Interface {
         }
 
         //The while loop has ended and the if checks if you won or were defeated
-        if(controller.enemiesList.isEmpty()){
+        if (controller.enemiesList.isEmpty()) {
             printSeparator();
             System.out.println("\t#There are no enemies left, YOU WIN!");
             printSeparator();
-        }else {
+        } else {
             printSeparator();
             System.out.println("\t#You have no HP left!\n\t#You have been defeated - GAME OVER!");
             printSeparator();
@@ -135,17 +166,20 @@ public class Interface {
             System.out.println("\tEnemy HP: " + controller.currentEnemy.getHp());
             int input = combatOptionsChoice();
             if (input == 1) {
-                printSeparator();
                 printPlayerAttack();
-                printSeparator();
-            }else if (input == 2){
-                boolean drinkHealthPotion = controller.drinkHealthPotion();
-
+            } else if (input == 2) {
+                drinkHealthPotion();
+            } else {
+                System.out.println("\t#You wanna run and the only way to get out is to exit the game!");
+                System.out.println("\t#Good bye!");
+                controller.exit();
             }
         } while (controller.currentEnemy.getHp() > 0 && controller.player.getHp() > 0);
+
         if (controller.currentEnemy.getHp() == 0) {
-            System.out.println("The " + controller.currentEnemy.getCharacterName() + " have been defeated!" +
-                    "\nYou continue to the next dungeon!");
+            System.out.println("The " + controller.currentEnemy.getCharacterName() + " have been defeated!");
+            enemyDroppedHealthPotion();
+            System.out.println("\nYou continue to the next dungeon!");
         }
     }
 }

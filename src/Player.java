@@ -1,8 +1,5 @@
 public class Player extends Character {
 
-    //TODO Enemies killed by type
-    //TODO Stats on Caves completed
-   //Player stats:
     private int numHealthPotions = 0;
 
     public Player(String characterName, String battleCry, int minAttackDamage, int maxAttackDamage, int hp,
@@ -16,15 +13,11 @@ public class Player extends Character {
     }
 
     public void increaseNumbHealthPotions() {
-        this.numHealthPotions ++;
+        this.numHealthPotions++;
     }
 
-    public void decreaseNumHealthPotions(){
-        this.numHealthPotions --;
-    }
-
-    public void drinkHealthPotion(int healthPoptionHealingAmount){
-        super.hp =+ healthPoptionHealingAmount;
+    public void decreaseNumHealthPotions() {
+        this.numHealthPotions--;
     }
 
 }

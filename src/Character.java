@@ -21,7 +21,9 @@ public abstract class Character {
         return hp;
     }
 
-    public void setHP(int hp){this.hp = hp;}
+    public void setHP(int hp) {
+        this.hp = hp;
+    }
 
     public String getBattleCry() {
         return battleCry;
@@ -35,9 +37,13 @@ public abstract class Character {
         return maxAttackDamage;
     }
 
-    public void damageTaken(int damage){
-        if(hp - damage < 0){
+    public void damageTaken(int damage) {
+        if (hp - damage < 0) {
             hp = 0;
-        }else hp = hp - damage;
+        } else hp = hp - damage;
+    }
+
+    public void heal(int healingAmount) {
+        this.hp += healingAmount;
     }
 }
