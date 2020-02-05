@@ -99,7 +99,7 @@ public class Interface {
         boolean drinkHealthPotion = controller.drinkHealthPotion();
         if (drinkHealthPotion) {
             System.out.println("\t#You drink a health potion and gain " +
-                    (playerCurrentHP - controller.player.getHp()) + "HP" + "\n\t#You now have " +
+                    (controller.player.getHp() - playerCurrentHP) + "HP" + "\n\t#You now have " +
                     controller.player.getHp() + "HP");
         } else {
             System.out.println("\t#You check your inventory and you have any more health potions left!");
@@ -140,24 +140,13 @@ public class Interface {
             printSeparator();
             System.out.println("\t#There are no enemies left, YOU WIN!");
             printSeparator();
+            controller.exit();
         } else {
             printSeparator();
             System.out.println("\t#You have no HP left!\n\t#You have been defeated - GAME OVER!");
             printSeparator();
+            controller.exit();
         }
-                   /*
-            //Checking if healthpotion dropped
-            boolean newHealthpotion = controller.luckyDrop();
-            if (newHealthpotion) {
-                System.out.println("The enemy dropped a healthpotion and you pick it up!");
-                System.out.println("You now have " + " healthpotion(s)");
-            } else {
-                System.out.println("No loot");
-
-                break;
-
-                //TODO Continue here
-            }*/
     }
 
     public void combat() {

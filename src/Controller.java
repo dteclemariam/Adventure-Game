@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 public class Controller {
 
@@ -63,8 +64,18 @@ public class Controller {
 
     //method for closing game
     public void exit() {
-        System.out.println("The game is exiting");
-        System.exit(0);
+        System.out.print("The game is exiting..");
+        //10 sec delay on close
+        int seconds = 10;
+        try {
+            for (int i = 0; i < seconds; i++) {
+                TimeUnit.SECONDS.sleep(1);
+                System.out.print(".");
+            }
+        }catch (InterruptedException ie){
+            Thread.currentThread().interrupt();
+        }
+            System.exit(0);
     }
 
 
